@@ -1,0 +1,8 @@
+service: task-scheduler
+runtime: nodejs8
+
+# what follows will be optional in the future:
+threadsafe: true
+handlers:
+- url: /.*
+  script: server.js

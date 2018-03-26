@@ -1,0 +1,11 @@
+{
+  "name": "scheduler",
+  "version": "1.0.0",
+  "description": "Schedule screenshot task creation",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
