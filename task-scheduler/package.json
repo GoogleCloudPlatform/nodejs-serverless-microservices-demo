@@ -4,6 +4,7 @@
   "description": "Schedule screenshot task creation",
   "scripts": {
     "start": "node server.js",
+    "deploy": "gcloud app deploy --quiet",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
