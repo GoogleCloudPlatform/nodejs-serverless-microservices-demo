@@ -9,7 +9,7 @@ A set of microservices to perform automated visual regression.
 * App Engine
 * Cloud Functions
 * Cloud Datastore API
-* Cloud Tasks API
+* [Cloud Tasks API](https://pantheon.corp.google.com/apis/library/cloudtasks.googleapis.com/) (sign up for Alpha at: https://goo.gl/Ya0AZd)
 * Cloud Storage API
 
 ## Architecture

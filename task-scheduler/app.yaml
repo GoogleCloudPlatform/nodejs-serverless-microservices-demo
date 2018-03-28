@@ -1,6 +1,14 @@
 service: task-scheduler
 runtime: nodejs8
 
+# Replace these with yours
+env_variables:
+  GOOGLE_CLOUD_PROJECT: 'nodejs-microservices-demo'
+  QUEUE_ID: 'screenshots'
+  QUEUE_LOCATION: 'us-central1'
+  TARGET_SERVICE: 'capture-screenshot'
+
+
 # what follows will be optional in the future:
 threadsafe: true
 handlers:
