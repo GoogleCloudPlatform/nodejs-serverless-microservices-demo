@@ -3,3 +3,5 @@ runtime: nodejs8
 handlers:
 - url: /public
   static_dir: public
+- url: /.*
+  script: app.js
