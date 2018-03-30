@@ -1,0 +1,12 @@
+{
+  "name": "imageDiff",
+  "version": "1.0.0",
+  "description": "Simple function to compare two images from GCS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "gcloud beta functions deploy imageDiff --trigger-resource screenshots-microservice-demo --trigger-event google.storage.object.finalize"
+  },
+  "author": "steren@google.com",
+  "license": "ISC"
+}
