@@ -5,32 +5,42 @@ const Datastore = require('@google-cloud/datastore');
 const datastore = new Datastore();
 
 /* displays a new message, creates it if needed */
-router.get('/', (req, res) => {
-  if(!req.query.url) {
+router.get('/', async (req, res) => {
+  const url = req.query.url;
+  if(!url) {
     return res.status(400).send('Please provide a URL.');
   }
 
-  // TODO: look for this website, if exists, just display data without creating it.
+  let website;
 
-  const taskKey = datastore.key('Website');
-  const website = {
-    key: taskKey,
-    data: {
-      url: req.query.url,
-    },
-  };
+  console.log(`Looking for website ${url}`)
 
-  // Saves the entity
-  datastore
-    .save(website)
-    .then(() => {
-      console.log(`Saved ${website.key.path}: ${website.data.url}`);
-      return res.redirect('/');
-    })
-    .catch(err => {
-      console.error('ERROR:', err);
-      return res.status(500).send(err);
-    });
+  // Look for this website
+  // TODO: use some memcache
+  const query = datastore
+    .createQuery('Website')
+    .filter('url', '=', url);
+  const results = await datastore.runQuery(query);
+  if(results[0] && results[0].length > 0) {
+    // website found
+    website = results[0][0];
+    console.log(`Website found: ${website.url}`);
+  } else {
+    console.log(`Website not found: ${url}`);
+    // website does not exist, create it
+    const taskKey = datastore.key('Website');
+    const newWebsite = {
+      key: taskKey,
+      data: {
+        url: url,
+      },
+    };
+    await datastore.save(newWebsite);
+    console.log(`New website saved: ${url}`);
+    website = newWebsite.data;
+  }
+
+  res.render('website', { website });
 });
 
 module.exports = router;

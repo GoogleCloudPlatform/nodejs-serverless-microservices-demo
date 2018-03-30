@@ -4,12 +4,10 @@ const Datastore = require('@google-cloud/datastore');
 const datastore = new Datastore();
 
 /* GET home page. */
-router.get('/', (req, res, next) => {
-  const query = datastore
-    .createQuery('Website');
-  datastore.runQuery(query).then(results => {
-    res.render('index', { websites: results[0] });
-  });
+router.get('/', async (req, res) => {
+  const query = datastore.createQuery('Website');
+  const results = await datastore.runQuery(query);
+  res.render('index', { websites: results[0] });
 });
 
 module.exports = router;

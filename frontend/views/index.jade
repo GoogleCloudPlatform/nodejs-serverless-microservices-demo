@@ -11,4 +11,5 @@ block content
   h2 Tracked Websites
   ol
   each website in websites
-    li= website.url
+    li
+      a(href="/website?url=#{website.url}")=website.url
