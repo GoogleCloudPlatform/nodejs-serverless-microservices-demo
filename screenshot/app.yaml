@@ -1,0 +1,4 @@
+service: screenshot
+
+runtime: custom
+env: flex
