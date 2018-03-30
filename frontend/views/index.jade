@@ -1,5 +1,14 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  h1 Website watcher
+
+  h2 Track new website
+  form(action="/website" method="GET")
+    input(type="text" name="url")
+    input(type="submit")
+
+  h2 Tracked Websites
+  ol
+  each website in websites
+    li= website.url

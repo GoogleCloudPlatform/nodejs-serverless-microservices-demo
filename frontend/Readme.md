@@ -12,3 +12,6 @@ Express.js web frontend to display website screenshots
 `npm run deploy`
 
 ## TODO
+
+- Read database for tracked URLs
+- Create detail page for a given tracked URL

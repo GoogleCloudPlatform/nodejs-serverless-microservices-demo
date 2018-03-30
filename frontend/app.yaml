@@ -1,2 +1,5 @@
 service: frontend
 runtime: nodejs8
+
+- url: /public
+  static_dir: public
