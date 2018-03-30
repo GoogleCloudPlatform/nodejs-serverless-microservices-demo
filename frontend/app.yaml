@@ -1,0 +1,2 @@
+service: frontend
+runtime: nodejs8
