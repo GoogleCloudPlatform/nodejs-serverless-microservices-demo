@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/datastore": "^1.4.0",
     "googleapis": "^27.0.0"
   }
 }

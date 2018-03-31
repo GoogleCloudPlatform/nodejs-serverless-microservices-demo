@@ -1,17 +1,21 @@
 const http = require("http");
 const createScreenshotTask = require('./lib/create-screenshot-task');
+const Datastore = require('@google-cloud/datastore');
+const datastore = new Datastore();
 
-var server = http.createServer((req, res) => {
+var server = http.createServer(async (req, res) => {
   console.log('Looking for new tasks to schedule...');
 
-  const tasksToCreate = ['http://steren.fr'];
-
-  tasksToCreate.forEach((url) => {
+  const query = datastore.createQuery('Website');
+  const results = await datastore.runQuery(query);
+  const websites = results[0];
+  console.log(`Found ${websites.length} urls to screenshot, creating tasks...`)
+  websites.forEach((website) => {
     // TODO return promise and await
-    createScreenshotTask(`/${url}`);
+    createScreenshotTask(`/${website.url}`);
   })
   
-  console.log(`${tasksToCreate.length} task scheduled`);
+  console.log(`${websites.length} tasks scheduled`);
 
   res.writeHead(200, {"Content-Type": "text/plain"});
   res.end('done');
