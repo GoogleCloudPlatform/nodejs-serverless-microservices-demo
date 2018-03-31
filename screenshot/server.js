@@ -6,7 +6,10 @@ const storage = new Storage();
 const app = express();
 
 app.use(async (req, res) => {
-  if(req.path === '/') {res.end('Please provide URL, example: /http://example.com');}
+  if(req.path === '/') {return res.end('Please provide URL, example: /http://example.com');}
+
+  // make sure the URL starts with a protocol
+  if(!req.path.startsWith('/http')) {return res.status(400).send('URL must start with http:// or https://');}
 
   const url = req.path.slice(1);
   console.log(`URL: ${url}`);
@@ -36,7 +39,7 @@ app.use(async (req, res) => {
 
   // returns the screenshot
   res.set('Content-Type', 'image/png')
-  res.end(imageBuffer);
+  res.send(imageBuffer);
 })
 
 const server = app.listen(process.env.PORT || 8080, err => {
