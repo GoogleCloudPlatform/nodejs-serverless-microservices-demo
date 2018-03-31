@@ -6,7 +6,7 @@
   "version": "1.0.0",
   "description": "Takes screenshot of given URL",
   "scripts": {
-    "start": "node server.js",
+    "start": "node screenshot.js",
     "deploy": "gcloud app deploy --quiet",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

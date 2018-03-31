@@ -2,3 +2,6 @@ service: screenshot
 
 runtime: custom
 env: flex
+
+env_variables:
+  SCREENSHOT_BUCKET_NAME: screenshots-microservice-demo

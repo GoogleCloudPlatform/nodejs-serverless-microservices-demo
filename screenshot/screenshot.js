@@ -27,14 +27,14 @@ app.use(async (req, res) => {
   
   // Uploads a local file to the bucket
   
-  const bucketName = 'screenshots-microservice-demo';
+  const bucketName = process.env.SCREENSHOT_BUCKET_NAME;
   const bucket = storage.bucket(bucketName);
   
   const date = new Date();
   const timestamp = date.getTime();
   const filename = `${timestamp}.png`;
   const filepath = url.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-  const file = bucket.file(`${filepath}/${filename}`);
+  const file = bucket.file(`screenshots/${filepath}/${filename}`);
   await file.save(imageBuffer);
 
   // returns the screenshot
