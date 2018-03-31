@@ -6,6 +6,9 @@ Express.js web frontend to display website screenshots
 
 - Google App Engine
 - Cloud Datastore
+- Cloud Storage
+
+Make all images in the GCS bucket public, with: `gsutil iam ch allUsers:objectViewer gs://[BUCKET_NAME]`
 
 ## Deploy
 
@@ -13,5 +16,3 @@ Express.js web frontend to display website screenshots
 
 ## TODO
 
-- Read database for tracked URLs
-- Create detail page for a given tracked URL

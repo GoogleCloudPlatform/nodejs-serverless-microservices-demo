@@ -3,4 +3,5 @@ extends layout
 block content
   h1= website.url
   h2 History
-  p TODO
+  each screenshot in screenshots
+    img(src=screenshot.url)

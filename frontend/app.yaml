@@ -5,3 +5,6 @@ handlers:
   static_dir: public
 - url: /.*
   script: app.js
+
+env_variables:
+  BUCKET_NAME: screenshots-microservice-demo
