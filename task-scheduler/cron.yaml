@@ -1,5 +1,5 @@
 cron:
-- description: "look for tasks to create"
+- description: "look for webpages to screenshot"
   url: /
   schedule: every 5 minutes
   target: task-scheduler
