@@ -32,7 +32,7 @@ router.get('/', async (req, res) => {
     // website does not exist, create it
 
     //make sure it starts with an http or https protocol
-    if(!u.startsWith('http://') && !u.startsWith('https://')) {
+    if(!url.startsWith('http://') && !url.startsWith('https://')) {
       url = 'http://' + url;
     }
 
