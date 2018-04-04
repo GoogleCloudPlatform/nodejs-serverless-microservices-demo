@@ -1,3 +1,8 @@
+const fs = require('fs');
+const path = require('path');
+const storage = require('@google-cloud/storage')();
+const diff = require('./diff');
+
 /**
  * Generic background Cloud Function to be triggered by Cloud Storage.
  *
@@ -7,14 +12,69 @@
 exports.imageDiff = (event, callback) => {
     const file = event.data;
     const context = event.context;
-  
-    console.log(`Event ${context.eventId}`);
-    console.log(`  Event Type: ${context.eventType}`);
-    console.log(`  Bucket: ${file.bucket}`);
-    console.log(`  File: ${file.name}`);
-    console.log(`  Metageneration: ${file.metageneration}`);
-    console.log(`  Created: ${file.timeCreated}`);
-    console.log(`  Updated: ${file.updated}`);
-  
-    callback();
+
+    if(!file.name.startsWith('screenshots/')) {
+      console.log(`${file.name} is not a screenshot`);
+      return callback();
+    }
+
+    // extract URL from file:
+    var urlFolder;
+    try {
+      urlFolder = file.name.match(/\/([a-z0-9_]+)\//)[1]
+    } catch(e) {
+      console.error(`Cannot extract url folder for ${file.name}`);
+      callback();
+    }
+    console.log(`Evaluating ${urlFolder}`);
+
+    // The received image:
+    const imageFile = storage.bucket(file.bucket).file(file.name);
+    // The reference for this URL:
+    const referenceImageFile = storage.bucket(file.bucket).file(`references/${urlFolder}/ref.png`);
+    
+    // Check that the reference exists
+    referenceImageFile.exists().then((data) => {
+      const exists = data[0];
+      if(!exists) {
+        console.log(`Could not find reference for ${urlFolder}`);
+        storeAsKeyframeAndReference(urlFolder, imageFile);
+      } else {
+
+        // Compare images
+        areImagesDifferent(referenceImageFile, imageFile, (err, data) => {
+          if(data) {
+            console.log(`Difference found for ${urlFolder}`);
+            // images are different:
+            storeAsKeyframeAndReference(urlFolder, imageFile, callback);
+          } else {
+            console.log(`No difference found for ${urlFolder}`);
+            callback();    
+          }
+        });
+      }
+    });
   };
+
+function storeAsKeyframeAndReference(urlFolder, file, callback) {
+  Promise.all([
+    file.copy(`references/${urlFolder}/ref.png`),
+    file.copy(file.name.replace('screenshots/', 'keyframes/'))
+  ]).then((copies) => {
+    callback();
+  });
+}
+
+function areImagesDifferent(referenceFile, file, callback) {
+  console.log(`Comparing images: ${referenceFile.name} and ${file.name}`);
+  // Load both images
+  Promise.all([
+    file.download(), 
+    referenceFile.download()
+  ]).then((contents) => {
+    var fileContent = contents[0][0];
+    var referenceFileContent = contents[1][0];
+
+    diff(fileContent, referenceFileContent, 400, 400, callback);
+  });
+}

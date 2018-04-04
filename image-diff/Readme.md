@@ -11,4 +11,8 @@ Simple function that compares any new image uploaded to GCS with a reference ima
 
 `npm run deploy`
 
-## TODO
+## How it works
+
+This function listen for new files created in the given Cloud Storage bucket.
+If a new file is detected in a `screenshots/<url>/` folder, then it will compare this image with a potential reference image `references/<url>/ref.png`.
+If a difference is found, then the reference is updated and the image is copied to a `keyframes/<url>/` folder.
