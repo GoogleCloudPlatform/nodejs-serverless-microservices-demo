@@ -48,11 +48,11 @@ router.get('/', async (req, res) => {
     website = newWebsite.data;
   }
 
-  // retrieve screenshots
+  // retrieve keyframes
   const bucketName = process.env.BUCKET_NAME;
   console.log(`bucketName: ${bucketName}`);
   const urlPath = url.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-  const pathPrefix = 'screenshots'
+  const pathPrefix = 'keyframes'
   const options = {
     prefix: `${pathPrefix}/${urlPath}/`,
     delimiter: '/'
@@ -62,9 +62,9 @@ router.get('/', async (req, res) => {
   files.map( file => {
     file.url = ` https://storage.googleapis.com/${bucketName}/${file.name}`;
   })
-  console.log(`${files.length} screenshots found for ${url}`)
+  console.log(`${files.length} keyframes found for ${url}`)
 
-  res.render('website', { website, screenshots: files });
+  res.render('website', { website, keyframes: files });
 });
 
 module.exports = router;
