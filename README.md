@@ -37,6 +37,7 @@ The `frontend` service is a web frontend that allows to browse the data: Its mai
 
 ## TODO
 
+* screenshot: use a larger resolution
 * tooling to deploy from scratch (Deployment Manager?)
 * app to clean up the "staging" bucket
 * Basic styling of the frontend (use https://material.io/components/web/)
@@ -46,3 +47,4 @@ The `frontend` service is a web frontend that allows to browse the data: Its mai
 * Hangouts Chat notifier function
 * User can delete a website
 * Add a back action on the website details page
+* make screenshot screen resolution configurable 
