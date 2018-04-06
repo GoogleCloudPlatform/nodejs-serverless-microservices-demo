@@ -21,6 +21,18 @@ app.use(async (req, res) => {
   });
   const page = await browser.newPage();
   await page.goto(url);
+
+  // Custom CSS to avoid capturing blinking cursors when input fields have focus
+  const hideInputTextCSS = `
+    input {
+      color: transparent;
+      text-shadow: 0 0 0 black;
+    }
+    input:focus {
+      outline: none;
+    }
+  `;
+  await page.addStyleTag({ content: hideInputTextCSS });
   let imageBuffer = await page.screenshot();
   await browser.close();
 
