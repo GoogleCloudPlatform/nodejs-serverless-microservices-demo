@@ -13,7 +13,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/logging-bunyan": "^0.7.0",
     "@google-cloud/storage": "^1.6.0",
+    "bunyan": "^1.8.12",
     "express": "^4.16.3",
     "puppeteer": "^1.2.0"
   }
