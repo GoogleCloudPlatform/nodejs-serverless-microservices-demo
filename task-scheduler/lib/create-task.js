@@ -18,10 +18,12 @@
 const {google} = require('googleapis');
 const cloudtasks = google.cloudtasks('v2beta2');
 
+const logger = require('../logger');
+
 function authorize (callback) {
   google.auth.getApplicationDefault(function (err, authClient) {
     if (err) {
-      console.error('authentication failed: ', err);
+      logger.error(`authentication failed: ${err}`);
       return;
     }
     if (authClient.createScopedRequired && authClient.createScopedRequired()) {
@@ -55,11 +57,11 @@ function createTask (project, location, queue, relative_url) {
       auth: authClient
     };
 
-    console.log(`Sending task: service ${process.env.TARGET_SERVICE}, URL: ${relative_url}`);
+    logger.info(`Sending task: service ${process.env.TARGET_SERVICE}, URL: ${relative_url}`);
 
     cloudtasks.projects.locations.queues.tasks.create(request, (err, response) => {
       if (err) {
-        console.error(err);
+        logger.error(err);
         return;
       }
     });
