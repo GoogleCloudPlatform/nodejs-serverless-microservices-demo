@@ -5,7 +5,7 @@ const http = require("http");
 const Datastore = require('@google-cloud/datastore');
 
 const logger = require('./logger');
-const createScreenshotTask = require('./lib/create-screenshot-task');
+const createScreenshotTask = require('./lib/create-screenshot-event');
 
 const datastore = new Datastore();
 
@@ -32,7 +32,7 @@ const server = http.createServer(async (req, res) => {
 
   websites.forEach((website) => {
     // TODO return promise and await
-    createScreenshotTask(`/${website.url}`);
+    createScreenshotTask(`${website.url}`);
   })
   
   logger.info(`${websites.length} tasks scheduled`);

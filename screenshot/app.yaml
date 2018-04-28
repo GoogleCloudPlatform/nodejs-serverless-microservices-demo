@@ -6,3 +6,9 @@ instance_class: F4_1G
 
 env_variables:
   SCREENSHOT_BUCKET_NAME: screenshots-microservice-demo
+
+handlers:
+- url: /.*
+  script: true
+  secure: always
+  redirect_http_response_code: 301

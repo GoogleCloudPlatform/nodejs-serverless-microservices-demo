@@ -4,28 +4,45 @@
 // Cloud Storage library tries to write in /home/ when uploading a buffer
 process.env.HOME = '/tmp';
 
+const bodyParser = require('body-parser');
 const express = require('express');
 const puppeteer = require('puppeteer');
+require('@google-cloud/debug-agent').start({allowExpressions: true});
 const Storage = require('@google-cloud/storage');
+require('@google-cloud/profiler').start();
 
 const logger = require('./logger');
 
 const storage = new Storage();
 
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(async (req, res, next) => {
-  if(req.path === '/') {
-    const err = new Error('Please provide URL, example: /http://example.com')
-    logger.error(err);
+  let url;
+
+  if(!req.body.message) {
+    url = req.query.url;
+  } else {
+    try{
+      const parsedPayload = JSON.parse(Buffer.from(req.body.message.data, 'base64').toString('utf-8'))
+      url = parsedPayload.url;
+    } catch (err) {
+      next(err);
+      return;
+    }
+  }
+
+  if(!url) {
+    const err = new Error('Please provide URL as GET parameter or in POST body, example: ?url=http://example.com')
     next(err);
     return;
   }
 
   // make sure the URL starts with a protocol
-  if(!req.path.startsWith('/http')) {return res.status(400).send('URL must start with http:// or https://');}
+  if(!url.startsWith('http')) {return res.status(400).send('URL must start with http:// or https://');}
 
-  const url = req.path.slice(1);
   logger.info(`URL: ${url} - starting screenshot`);
   
   let browser;

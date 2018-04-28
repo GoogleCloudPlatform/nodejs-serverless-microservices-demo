@@ -7,3 +7,5 @@ env_variables:
   QUEUE_ID: 'screenshots'
   QUEUE_LOCATION: 'us-central1'
   TARGET_SERVICE: 'screenshot'
+  TOPIC_NAME: 'screenshots'
+  SUBSCRIPTION_NAME: 'screenshots'

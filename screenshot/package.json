@@ -13,10 +13,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/debug-agent": "^2.5.1",
     "@google-cloud/logging-bunyan": "^0.7.0",
+    "@google-cloud/profiler": "^0.1.14",
     "@google-cloud/storage": "^1.6.0",
+    "body-parser": "^1.18.2",
     "bunyan": "^1.8.12",
     "express": "^4.16.3",
+    "install": "^0.11.0",
+    "npm": "^6.0.0",
     "puppeteer": "^1.2.0"
   }
 }

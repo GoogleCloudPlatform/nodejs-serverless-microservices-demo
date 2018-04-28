@@ -3,8 +3,12 @@ runtime: nodejs8
 handlers:
 - url: /public
   static_dir: public
+  secure: always
+  redirect_http_response_code: 301
 - url: /.*
-  script: app.js
+  script: true
+  secure: always
+  redirect_http_response_code: 301
 
 env_variables:
   BUCKET_NAME: screenshots-microservice-demo

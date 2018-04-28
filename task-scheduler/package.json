@@ -12,6 +12,7 @@
   "dependencies": {
     "@google-cloud/datastore": "^1.4.0",
     "@google-cloud/logging-bunyan": "^0.7.0",
+    "@google-cloud/pubsub": "^0.18.0",
     "bunyan": "^1.8.12",
     "googleapis": "^27.0.0"
   }
