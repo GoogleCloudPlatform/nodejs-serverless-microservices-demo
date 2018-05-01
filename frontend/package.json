@@ -6,6 +6,10 @@
     "start": "node ./bin/www",
     "deploy": "gcloud app deploy --quiet"
   },
+  "author": {
+    "name": "Google LLC"
+  },
+  "license": "Apache-2.0",
   "dependencies": {
     "@google-cloud/datastore": "^1.4.0",
     "@google-cloud/logging-bunyan": "^0.7.0",

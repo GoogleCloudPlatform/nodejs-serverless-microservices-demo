@@ -10,8 +10,10 @@
     "deploy": "gcloud app deploy --quiet",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": {
+    "name": "Google LLC"
+  },
+  "license": "Apache-2.0",
   "dependencies": {
     "@google-cloud/debug-agent": "^2.5.1",
     "@google-cloud/logging-bunyan": "^0.7.0",

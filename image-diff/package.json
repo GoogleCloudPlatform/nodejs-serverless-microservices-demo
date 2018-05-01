@@ -7,8 +7,10 @@
     "test": "tap test/test-*.js",
     "deploy": "gcloud beta functions deploy imageDiff --trigger-resource screenshots-microservice-demo --trigger-event google.storage.object.finalize"
   },
-  "author": "steren@google.com",
-  "license": "ISC",
+  "author": {
+    "name": "Google LLC"
+  },
+  "license": "Apache-2.0",
   "devDependencies": {
     "tap": "^11.1.3"
   },
