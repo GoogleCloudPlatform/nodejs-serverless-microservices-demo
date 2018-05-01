@@ -35,11 +35,7 @@ The `image-diff` function compares the new image with a reference image from the
 
 The `frontend` service is a web frontend that allows to browse the data: Its main page lists the currently tracked webpages, clicking on a webpage shows all the saved keyframes for this webpage. Users can start tracking a new webpage by entering its URL, which will add a new entity to the Cloud Datastore database.
 
-## License
-
-[Apache 2.0](./LICENSE)
-
-## TODO
+## Potential Improvements
 
 * screenshot: use a larger resolution
 * tooling to deploy from scratch (Deployment Manager?)
@@ -50,3 +46,7 @@ The `frontend` service is a web frontend that allows to browse the data: Its mai
 * User can delete a website
 * Add a back action on the website details page
 * make screenshot screen resolution configurable 
+
+## License
+
+[Apache 2.0](./LICENSE)
