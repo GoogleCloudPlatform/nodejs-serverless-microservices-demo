@@ -23,5 +23,8 @@
     "bunyan": "^1.8.12",
     "express": "^4.16.3",
     "puppeteer": "^1.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1"
   }
 }
