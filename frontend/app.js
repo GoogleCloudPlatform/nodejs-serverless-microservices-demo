@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
 'use strict';
 
 const bodyParser = require('body-parser');
@@ -43,7 +44,7 @@ app.use('/website', websites);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  var err = new Error(`${req.originalUrl} Not Found`);
   err.status = 404;
   logger.warn(err);
   next(err);
