@@ -15,7 +15,6 @@ limitations under the License.
 */
 const fs = require('fs');
 const path = require('path');
-const sharp = require('sharp');
 
 const tap = require('tap').test;
 

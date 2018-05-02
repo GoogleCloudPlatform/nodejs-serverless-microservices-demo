@@ -13,10 +13,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-const fs = require('fs');
-const path = require('path');
-const storage = require('@google-cloud/storage')();
+
+/* eslint no-console: "off" */
+
+const Storage = require('@google-cloud/storage');
+
 const diff = require('./diff');
+
+const storage = new Storage();
 
 /**
  * Generic background Cloud Function to be triggered by Cloud Storage.
@@ -26,7 +30,6 @@ const diff = require('./diff');
  */
 exports.imageDiff = (event, callback) => {
     const file = event.data;
-    const context = event.context;
 
     if(!file.name.startsWith('screenshots/')) {
       console.log(`${file.name} is not a screenshot`);
@@ -75,7 +78,7 @@ function storeAsKeyframeAndReference(urlFolder, file, callback) {
   Promise.all([
     file.copy(`references/${urlFolder}/ref.png`),
     file.copy(file.name.replace('screenshots/', 'keyframes/'))
-  ]).then((copies) => {
+  ]).then((/* copies */) => {
     callback();
   });
 }

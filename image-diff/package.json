@@ -4,7 +4,9 @@
   "description": "Simple function to compare two images from GCS",
   "main": "index.js",
   "scripts": {
-    "test": "tap test/test-*.js",
+    "test": "npm run lint && npm run tap",
+    "tap": "tap test/test-*.js",
+    "lint": "eslint *.js test/",
     "deploy": "gcloud beta functions deploy imageDiff --trigger-resource screenshots-microservice-demo --trigger-event google.storage.object.finalize"
   },
   "author": {
