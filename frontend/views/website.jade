@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  h1= website.url
-  h2 History
+  h1(class="mdc-typography--headline2")= website.url
+  h2(class="mdc-typography--headline3") History
   each keyframe in keyframes
     img(src=keyframe.url)
