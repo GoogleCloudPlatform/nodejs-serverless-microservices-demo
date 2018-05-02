@@ -71,6 +71,10 @@ app.use(async (req, res, next) => {
     });
     page = await browser.newPage();
     await page.goto(url);
+    await page.setViewport({
+      width: 1680,
+      height: 1050
+    });
   }
   catch (err) {
     next(err);
@@ -102,27 +106,27 @@ app.use(async (req, res, next) => {
 
   logger.info(`URL: ${url} - screenshot taken`);
   
-  // Uploads a local file to the bucket
+  // // Uploads a local file to the bucket
 
-  logger.info(`URL: ${url} - saving screenshot to GCS bucket: ${process.env.SCREENSHOT_BUCKET_NAME}`);
+  // logger.info(`URL: ${url} - saving screenshot to GCS bucket: ${process.env.SCREENSHOT_BUCKET_NAME}`);
 
-  const bucketName = process.env.SCREENSHOT_BUCKET_NAME;
-  const date = new Date();
-  const timestamp = date.getTime();
-  const filename = `${timestamp}.png`;
-  const filepath = url.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+  // const bucketName = process.env.SCREENSHOT_BUCKET_NAME;
+  // const date = new Date();
+  // const timestamp = date.getTime();
+  // const filename = `${timestamp}.png`;
+  // const filepath = url.replace(/[^a-z0-9]/gi, '_').toLowerCase();
 
-  try {
-    const bucket = storage.bucket(bucketName);
-    const file = bucket.file(`screenshots/${filepath}/${filename}`);
-    await file.save(imageBuffer);
-  }
-  catch (err) {
-    next(err);
-    return;
-  }
+  // try {
+  //   const bucket = storage.bucket(bucketName);
+  //   const file = bucket.file(`screenshots/${filepath}/${filename}`);
+  //   await file.save(imageBuffer);
+  // }
+  // catch (err) {
+  //   next(err);
+  //   return;
+  // }
 
-  logger.info(`URL: ${url} - screenshot saved`);
+  // logger.info(`URL: ${url} - screenshot saved`);
 
   // returns the screenshot
   res.set('Content-Type', 'image/png')
