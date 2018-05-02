@@ -17,5 +17,8 @@
     "@google-cloud/pubsub": "^0.18.0",
     "bunyan": "^1.8.12",
     "googleapis": "^27.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1"
   }
 }
