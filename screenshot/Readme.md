@@ -12,6 +12,10 @@ Start with `npm start`
 
 Capture a screenshot with `\<url>`.
 
+## Development
+
+Run locally with pretty printed bunyan logs with `npm run dev`.
+
 ## Deploy
 
 `npm run deploy`

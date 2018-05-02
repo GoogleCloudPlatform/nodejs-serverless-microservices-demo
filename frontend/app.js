@@ -45,7 +45,7 @@ app.use('/website', websites);
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
-  logger.warning(err);
+  logger.warn(err);
   next(err);
 });
 

@@ -8,7 +8,8 @@
   "scripts": {
     "start": "node screenshot.js",
     "deploy": "gcloud app deploy --quiet",
-    "test": "eslint *.js logger/"
+    "test": "eslint *.js logger/",
+    "dev": "npm start | bunyan"
   },
   "author": {
     "name": "Google LLC"

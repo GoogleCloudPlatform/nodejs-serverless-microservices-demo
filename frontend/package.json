@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "deploy": "gcloud app deploy --quiet",
-    "test": "eslint app.js routes/ logger/ bin/www"
+    "test": "eslint app.js routes/ logger/ bin/www",
+    "dev": "npm start | bunyan"
   },
   "author": {
     "name": "Google LLC"

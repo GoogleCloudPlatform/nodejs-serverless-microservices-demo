@@ -10,6 +10,10 @@ Express.js web frontend to display website screenshots
 
 Make all images in the GCS bucket public, with: `gsutil iam ch allUsers:objectViewer gs://[BUCKET_NAME]`
 
+## Development
+
+Run locally with pretty printed bunyan logs with `npm run dev`.
+
 ## Deploy
 
 `npm run deploy`

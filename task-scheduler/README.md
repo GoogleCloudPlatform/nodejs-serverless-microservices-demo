@@ -24,6 +24,10 @@ gcloud beta pubsub subscriptions create $SUBSCRIPTION_NAME \
    --ack-deadline 30
 ```
 
+## Development
+
+Run locally with pretty printed bunyan logs with `npm run dev`.
+
 ## Deployment
 
 Deploy the service with `npm run deploy`.
