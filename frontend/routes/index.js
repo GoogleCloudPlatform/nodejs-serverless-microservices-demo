@@ -35,6 +35,7 @@ router.get('/', async (req, res, next) => {
     next(err);
     return;
   }
+  logger.info('Successfuly got Website data from datastore');
 });
 
 module.exports = router;

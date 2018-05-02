@@ -18,7 +18,7 @@ limitations under the License.
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const express = require('express');
-const favicon = require('serve-favicon');
+// const favicon = require('serve-favicon');
 const path = require('path');
 
 const index = require('./routes/index');
@@ -60,6 +60,7 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+  next(err);
 });
 
 module.exports = app;

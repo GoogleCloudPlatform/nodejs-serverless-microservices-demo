@@ -27,7 +27,7 @@ const datastore = new Datastore();
 
 /* displays a new message, creates it if needed */
 router.get('/', async (req, res, next) => {
-  const url = req.query.url;
+  let url = req.query.url;
   if(!url) {
     logger.info('400: URL not provided');
     return res.status(400).send('Please provide a URL.');
