@@ -140,10 +140,11 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.end(err.message);
+  next(err);
 });
 
 const server = app.listen(process.env.PORT || 8080, err => {
-  if (err) return console.error(err);
+  if (err) return logger.error(err);
   const port = server.address().port;
-  console.log(`App listening on port ${port}`);
+  logger.info(`App listening on port ${port}`)
 });
