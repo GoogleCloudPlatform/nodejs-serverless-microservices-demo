@@ -37,11 +37,10 @@ The `frontend` service is a web frontend that allows to browse the data: Its mai
 
 ## Potential Improvements
 
-* screenshot: use a larger resolution
 * tooling to deploy from scratch (Deployment Manager?)
 * app to clean up the "staging" bucket
+* User can delete a particular keyframe, from the UI.
 * Basic styling of the frontend (use https://material.io/components/web/)
-* Polish the README files
 * Hangouts Chat notifier function
 * User can delete a website
 * Add a back action on the website details page
