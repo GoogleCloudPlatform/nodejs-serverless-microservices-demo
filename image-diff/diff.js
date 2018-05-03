@@ -17,10 +17,16 @@ const pixelmatch = require('pixelmatch');
 const sharp = require('sharp');
 
 function diff(oldImage, newImage, length, width, callback) {
+  // Number of pixels that have to mismatch to consider the images different
+  const diffPixelThreshold = 100;
+
   const diffBuffer = Buffer.alloc(oldImage.length);
   Promise.all([sharp(oldImage).toBuffer(), sharp(newImage).toBuffer()]).then(images => {
-    const diffPixelCount = pixelmatch(images[0], images[1], diffBuffer, length, width);
-    if (diffPixelCount === 0) return callback(null, false);
+    const diffPixelCount = pixelmatch(images[0], images[1], diffBuffer, length, width, {
+      includeAA: true, // Ignore Anti-aliasing in diff
+      threshold: 0.3, // be less sensitive than default (0.1) to determine if a pixel has changed.
+    });
+    if (diffPixelCount === diffPixelThreshold) return callback(null, false);
     callback(null, diffPixelCount, diffBuffer);
   });
 }
