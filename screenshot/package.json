@@ -6,7 +6,7 @@
   "version": "1.0.0",
   "description": "Takes screenshot of given URL",
   "scripts": {
-    "start": "node screenshot.js",
+    "start": "node server.js",
     "deploy": "gcloud app deploy --quiet",
     "test": "eslint *.js logger/",
     "dev": "npm start | bunyan"
