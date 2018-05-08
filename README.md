@@ -2,6 +2,7 @@
 
 A set of microservices to track visual changes of web pages.
 
+**This code is provided as example only. It is provided without guarantee or level of support.** This is not an official Google product (experimental or otherwise), it is just code that happens to be owned by Google.
 
 ## Dependencies
 
