@@ -43,20 +43,85 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(async (req, res, next) => {
+function getUrl(req) {
   let url;
-
   if(!req.body.message) {
     url = req.query.url;
-  } else {
-    try{
-      const parsedPayload = JSON.parse(Buffer.from(req.body.message.data, 'base64').toString('utf-8'))
-      url = parsedPayload.url;
-    } catch (err) {
-      next(err);
-      return;
-    }
+    return url;
   }
+  const parsedPayload = JSON.parse(Buffer.from(req.body.message.data, 'base64').toString('utf-8'))
+  url = parsedPayload.url;
+  return url;
+}
+
+async function startBrowser(url) {
+  const browser = await puppeteer.launch({
+    headless: true,
+    timeout: 90000,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
+  const page = await browser.newPage();
+  await page.goto(url);
+  await page.setViewport({
+    width: 1680,
+    height: 1050
+  });
+  return [browser, page];
+}
+
+async function hideCursor(page) {
+   // Custom CSS to avoid capturing blinking cursors when input fields have focus
+  const hideInputTextCSS = `
+    input {
+      color: transparent;
+      text-shadow: 0 0 0 black;
+    }
+    input:focus {
+      outline: none;
+    }
+  `;
+  await page.addStyleTag({ content: hideInputTextCSS });
+}
+
+async function takeScreenshot(url) {
+  let browser;
+  let page;
+
+  [browser, page] = await startBrowser(url);
+
+  await hideCursor(page);
+
+  logger.info(`URL: ${url} - starting screenshot`);
+  const imageBuffer = await page.screenshot();
+  logger.info(`URL: ${url} - screenshot taken`);
+
+  await browser.close();
+
+  return imageBuffer;
+}
+
+async function saveToBucket(imageBuffer, url) {
+  // Uploads a local file to the bucket
+
+  logger.info(`URL: ${url} - saving screenshot to GCS bucket: ${process.env.SCREENSHOT_BUCKET_NAME}`);
+
+  const bucketName = process.env.SCREENSHOT_BUCKET_NAME;
+  const date = new Date();
+  const timestamp = date.getTime();
+  const filename = `${timestamp}.png`;
+  const filepath = url.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+  
+  const bucket = storage.bucket(bucketName);
+
+  const file = bucket.file(`screenshots/${filepath}/${filename}`);
+
+  await file.save(imageBuffer);
+
+  logger.info(`URL: ${url} - screenshot saved`);
+}
+
+app.use(async (req, res, next) => {
+  const url = getUrl(req);
 
   if(!url) {
     const err = new Error('Please provide URL as GET parameter or in POST body, example: ?url=http://example.com')
@@ -67,79 +132,19 @@ app.use(async (req, res, next) => {
   // make sure the URL starts with a protocol
   if(!url.startsWith('http')) {return res.status(400).send('URL must start with http:// or https://');}
 
-  logger.info(`URL: ${url} - starting screenshot`);
-  
-  let browser;
-  let page;
+  logger.debug(`URL: ${url}`);
 
   try {
-    browser = await puppeteer.launch({
-      headless: true,
-      timeout: 90000,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
-    page = await browser.newPage();
-    await page.goto(url);
-    await page.setViewport({
-      width: 1680,
-      height: 1050
-    });
+    const imageBuffer = await takeScreenshot(url);
+    await saveToBucket(imageBuffer, url);
+    // returns the screenshot
+    res.set('Content-Type', 'image/png')
+    res.send(imageBuffer);
   }
   catch (err) {
     next(err);
     return;
   }
-
-  // Custom CSS to avoid capturing blinking cursors when input fields have focus
-  const hideInputTextCSS = `
-    input {
-      color: transparent;
-      text-shadow: 0 0 0 black;
-    }
-    input:focus {
-      outline: none;
-    }
-  `;
-  
-  let imageBuffer;
-
-  try {
-    await page.addStyleTag({ content: hideInputTextCSS });
-    imageBuffer = await page.screenshot();
-    await browser.close();
-  }
-  catch (err) {
-    next(err)
-    return;
-  }
-
-  logger.info(`URL: ${url} - screenshot taken`);
-  
-  // Uploads a local file to the bucket
-
-  logger.info(`URL: ${url} - saving screenshot to GCS bucket: ${process.env.SCREENSHOT_BUCKET_NAME}`);
-
-  const bucketName = process.env.SCREENSHOT_BUCKET_NAME;
-  const date = new Date();
-  const timestamp = date.getTime();
-  const filename = `${timestamp}.png`;
-  const filepath = url.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-
-  try {
-    const bucket = storage.bucket(bucketName);
-    const file = bucket.file(`screenshots/${filepath}/${filename}`);
-    await file.save(imageBuffer);
-  }
-  catch (err) {
-    next(err);
-    return;
-  }
-
-  logger.info(`URL: ${url} - screenshot saved`);
-
-  // returns the screenshot
-  res.set('Content-Type', 'image/png')
-  res.send(imageBuffer);
 });
 
 // error handler
@@ -150,6 +155,7 @@ app.use(function(err, req, res, next) {
 
   // log the error
   logger.error(err);
+
   // render the error page
   res.status(err.status || 500);
   res.end(err.message);
