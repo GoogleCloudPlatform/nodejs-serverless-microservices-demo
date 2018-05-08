@@ -34,6 +34,15 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// Ignore Favicon
+app.use((req, res, next) => {
+  if (req.originalUrl === '/favicon.ico') {
+    res.status(204).json({nope: true});
+    return;
+  }
+  next();
+});
+
 app.use(async (req, res, next) => {
   let url;
 
