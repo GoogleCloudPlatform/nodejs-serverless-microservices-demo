@@ -2,6 +2,10 @@ doctype html
 html
   head
     title= title
+    link(rel='stylesheet', href='/stylesheets/material-components-web.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
-  body
+  body(class="mdc-typography")
     block content
+    script(src="/scripts/material-components-web.js")
+    script
+      | mdc.autoInit();

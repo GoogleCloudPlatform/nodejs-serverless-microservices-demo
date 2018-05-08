@@ -21,3 +21,19 @@ body {
 a {
   color: #00B7FF;
 }
+
+#header {
+  text-align: center;
+}
+
+#form-title {
+  text-align: center;
+}
+
+#form-input {
+  padding: 2em;
+}
+
+#tracking-card {
+  padding: 2em;
+}

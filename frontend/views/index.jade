@@ -1,15 +1,20 @@
 extends layout
 
 block content
-  h1 Website watcher
+  div(id="header")
+    h1(class="mdc-typography--headline1") Website watcher
 
-  h2 Track new website
-  form(action="/website" method="GET")
-    input(type="text" name="url")
-    input(type="submit")
-
-  h2 Tracked Websites
-  ol
-  each website in websites
-    li
-      a(href="/website?url=#{website.url}")=website.url
+  div(class="mdc-layout-grid")
+    div(class="mdc-layout-grid__inner")
+      div(class="mdc-layout-grid__cell mdc-card")
+        h2(id="form-title" class="mdc-typography--headline2") Track new website
+        form(id="form-input" action="/website" method="GET" class="mdc-text-field")
+          input(type="text" name="url" class="mdc-text-field__input")
+          input(type="submit" class="mdc-button")
+      div(class="mdc-layout-grid__cell--span-8")
+        div(id="tracking-card" class="mdc-card")
+          h2(class="mdct-typography--display2") Tracked Websites
+          ol(class="mdc-list")
+          each website in websites
+            li(class="mdc-list-item")
+              a(href="/website?url=#{website.url}")=website.url

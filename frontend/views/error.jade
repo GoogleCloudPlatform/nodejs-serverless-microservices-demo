@@ -1,6 +1,6 @@
 extends layout
 
 block content
-  h1= message
-  h2= error.status
+  h1(class="mdc-typography--headline1")= message
+  h2(class="mdc-typography--headline2")= error.status
   pre #{error.stack}
