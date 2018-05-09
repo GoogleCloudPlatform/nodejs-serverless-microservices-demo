@@ -18,7 +18,7 @@ const sharp = require('sharp');
 
 function diff(oldImage, newImage, length, width, callback) {
   // Number of pixels that have to mismatch to consider the images different
-  const diffPixelThreshold = 100 * 100; // at least a change equivalent to 100x100px
+  const diffPixelThreshold = 100 * 10; // at least a change equivalent to 100x10px
 
   const diffBuffer = Buffer.alloc(oldImage.length);
   Promise.all([sharp(oldImage).toBuffer(), sharp(newImage).toBuffer()]).then(images => {
@@ -26,7 +26,7 @@ function diff(oldImage, newImage, length, width, callback) {
       includeAA: true, // Ignore Anti-aliasing in diff
       threshold: 0.3, // be less sensitive than default (0.1) to determine if a pixel has changed.
     });
-    if (diffPixelCount === diffPixelThreshold) return callback(null, false);
+    if (diffPixelCount < diffPixelThreshold) return callback(null, false);
     callback(null, diffPixelCount, diffBuffer);
   });
 }
