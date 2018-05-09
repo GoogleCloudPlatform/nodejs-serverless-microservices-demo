@@ -60,9 +60,9 @@ exports.imageDiff = (event, callback) => {
       } else {
 
         // Compare images
-        areImagesDifferent(referenceImageFile, imageFile, (err, data) => {
-          if(data) {
-            console.log(`Difference found for ${urlFolder}`);
+        areImagesDifferent(referenceImageFile, imageFile, (err, numPixel) => {
+          if(numPixel) {
+            console.log(`Difference found for ${urlFolder}: ${numPixel} pixel differ.`);
             // images are different:
             storeAsKeyframeAndReference(urlFolder, imageFile, callback);
           } else {
@@ -93,6 +93,6 @@ function areImagesDifferent(referenceFile, file, callback) {
     var fileContent = contents[0][0];
     var referenceFileContent = contents[1][0];
 
-    diff(fileContent, referenceFileContent, 400, 400, callback);
+    diff(fileContent, referenceFileContent, 1680, 1050, callback);
   });
 }
