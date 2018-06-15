@@ -19,6 +19,7 @@ limitations under the License.
 // Cloud Storage library tries to write in /home/ when uploading a buffer
 process.env.HOME = '/tmp';
 
+require('@google-cloud/trace-agent').start();
 const bodyParser = require('body-parser');
 const express = require('express');
 const puppeteer = require('puppeteer');
