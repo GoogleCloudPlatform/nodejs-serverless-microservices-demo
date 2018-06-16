@@ -19,13 +19,15 @@ limitations under the License.
 // Cloud Storage library tries to write in /home/ when uploading a buffer
 process.env.HOME = '/tmp';
 
+// Stackdriver APM
 require('@google-cloud/trace-agent').start();
+require('@google-cloud/debug-agent').start({allowExpressions: true});
+require('@google-cloud/profiler').start();
+
 const bodyParser = require('body-parser');
 const express = require('express');
 const puppeteer = require('puppeteer');
-require('@google-cloud/debug-agent').start({allowExpressions: true});
 const Storage = require('@google-cloud/storage');
-require('@google-cloud/profiler').start();
 
 const logger = require('./logger');
 
