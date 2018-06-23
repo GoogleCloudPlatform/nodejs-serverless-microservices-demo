@@ -15,8 +15,11 @@ limitations under the License.
 */
 
 /* eslint no-console: "off" */
-
+const traceApi = require('@google-cloud/trace-agent').start();
 const Storage = require('@google-cloud/storage');
+const debug = require('@google-cloud/debug-agent').start();
+require('@google-cloud/profiler').start();
+
 
 const diff = require('./diff');
 
@@ -29,6 +32,9 @@ const storage = new Storage();
  * @param {function} callback The callback function.
  */
 exports.imageDiff = (event, callback) => {
+  const debugReady = debug.isReady();
+  debugReady.then(() => {
+
     const file = event.data;
 
     if(!file.name.startsWith('screenshots/')) {
@@ -60,7 +66,9 @@ exports.imageDiff = (event, callback) => {
       } else {
 
         // Compare images
+        const compareSpan = traceApi.createChildSpan({name: 'compare'});
         areImagesDifferent(referenceImageFile, imageFile, (err, numPixel) => {
+          compareSpan.endSpan();
           if(numPixel) {
             console.log(`Difference found for ${urlFolder}: ${numPixel} pixel differ.`);
             // images are different:
@@ -72,13 +80,16 @@ exports.imageDiff = (event, callback) => {
         });
       }
     });
-  };
+  });
+};
 
 function storeAsKeyframeAndReference(urlFolder, file, callback) {
+  const storeSpan = traceApi.createChildSpan({name: 'store'});
   Promise.all([
     file.copy(`references/${urlFolder}/ref.png`),
     file.copy(file.name.replace('screenshots/', 'keyframes/'))
   ]).then((/* copies */) => {
+    storeSpan.endSpan();
     callback();
   });
 }
