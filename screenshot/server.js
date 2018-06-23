@@ -20,7 +20,7 @@ limitations under the License.
 process.env.HOME = '/tmp';
 
 // Stackdriver APM
-require('@google-cloud/trace-agent').start();
+const traceApi = require('@google-cloud/trace-agent').start();
 require('@google-cloud/debug-agent').start({allowExpressions: true});
 require('@google-cloud/profiler').start();
 
@@ -87,10 +87,12 @@ async function hideCursor(page) {
 }
 
 async function takeScreenshot(url) {
+  const span = traceApi.createChildSpan({name: 'screenshot'});
   let browser;
   let page;
-
+  const spanChrome = traceApi.createChildSpan({name: 'start-chrome'});
   [browser, page] = await startBrowser(url);
+  spanChrome.endSpan();
 
   await hideCursor(page);
 
@@ -99,13 +101,14 @@ async function takeScreenshot(url) {
   logger.info(`URL: ${url} - screenshot taken`);
 
   await browser.close();
-
+  span.endSpan();
   return imageBuffer;
 }
 
 async function saveToBucket(imageBuffer, url) {
   // Uploads a local file to the bucket
 
+  const span = traceApi.createChildSpan({name: 'save'});
   logger.info(`URL: ${url} - saving screenshot to GCS bucket: ${process.env.SCREENSHOT_BUCKET_NAME}`);
 
   const bucketName = process.env.SCREENSHOT_BUCKET_NAME;
@@ -121,6 +124,7 @@ async function saveToBucket(imageBuffer, url) {
   await file.save(imageBuffer);
 
   logger.info(`URL: ${url} - screenshot saved`);
+  span.endSpan();
 }
 
 app.use(async (req, res, next) => {
