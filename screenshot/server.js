@@ -65,8 +65,10 @@ async function startBrowser(url) {
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
   spanChrome.endSpan();
+  const spanPage = traceApi.createChildSpan({name: 'new-page'});
   const page = await browser.newPage();
-  const spanVisit = traceApi.createChildSpan({name: 'visit-page'});
+  spanPage.endSpan();
+  const spanVisit = traceApi.createChildSpan({name: 'goto-page'});
   await page.goto(url);
   await page.setViewport({
     width: 1680,
