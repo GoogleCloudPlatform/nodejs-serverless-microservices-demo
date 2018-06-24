@@ -19,6 +19,8 @@ instance_class: F4_1G
 
 env_variables:
   SCREENSHOT_BUCKET_NAME: screenshots-microservice-demo
+  # see https://github.com/GoogleCloudPlatform/cloud-trace-nodejs#tracing-with-asyncawait
+  GCLOUD_TRACE_NEW_CONTEXT: 1
 
 handlers:
 - url: /.*
