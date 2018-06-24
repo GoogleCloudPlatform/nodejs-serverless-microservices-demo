@@ -58,17 +58,21 @@ function getUrl(req) {
 }
 
 async function startBrowser(url) {
+  const spanChrome = traceApi.createChildSpan({name: 'launch-chrome'});
   const browser = await puppeteer.launch({
     headless: true,
     timeout: 90000,
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
+  spanChrome.endSpan();
   const page = await browser.newPage();
+  const spanVisit = traceApi.createChildSpan({name: 'visit-page'});
   await page.goto(url);
   await page.setViewport({
     width: 1680,
     height: 1050
   });
+  spanVisit.endSpan();
   return [browser, page];
 }
 
@@ -90,9 +94,8 @@ async function takeScreenshot(url) {
   const span = traceApi.createChildSpan({name: 'screenshot'});
   let browser;
   let page;
-  const spanChrome = traceApi.createChildSpan({name: 'start-chrome'});
   [browser, page] = await startBrowser(url);
-  spanChrome.endSpan();
+
 
   await hideCursor(page);
 
