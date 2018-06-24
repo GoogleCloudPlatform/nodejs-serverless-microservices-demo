@@ -15,7 +15,11 @@ limitations under the License.
 */
 
 /* eslint no-console: "off" */
-const traceApi = require('@google-cloud/trace-agent').start();
+const traceApi = require('@google-cloud/trace-agent').start({
+  serviceContext: {
+    service: 'image-diff'
+  }
+});
 const Storage = require('@google-cloud/storage');
 const debug = require('@google-cloud/debug-agent').start();
 require('@google-cloud/profiler').start();
