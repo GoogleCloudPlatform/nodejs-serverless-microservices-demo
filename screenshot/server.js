@@ -136,9 +136,7 @@ app.use(async (req, res, next) => {
   const url = getUrl(req);
 
   if(!url) {
-    const err = new Error('Please provide URL as GET parameter or in POST body, example: ?url=http://example.com')
-    next(err);
-    return;
+    return res.status(400).send('Please provide URL as GET parameter or in POST body, example: ?url=http://example.com');
   }
 
   // make sure the URL starts with a protocol
