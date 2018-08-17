@@ -25,7 +25,7 @@ Each micro service is stored in its dedicated folder.
 
 ## Architecture
 
-TODO: Add diagram image
+<img width="1293" alt="screen shot 2018-08-17 at 6 30 37 pm" src="https://user-images.githubusercontent.com/360895/44277689-c9ff5180-a24b-11e8-8f0d-15bc3133d222.png">
 
 Every 5 minutes, the `task-scheduler` microservice runs, queries the Cloud Datastore database for webpages ot screenshot.
 For each webpage, it sends a message to a Pub/Sub topic.
